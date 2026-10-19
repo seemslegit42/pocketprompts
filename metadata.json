@@ -1,0 +1,6 @@
+{
+  "name": "PocketPrompts",
+  "description": "Open-source cross-platform React Native prompt management studio with embedded SQLite offline storage, Point & Query vision, Structured Outputs, and automated LAN discovery for Ollama and llama.cpp.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #161110;
+    color: #F5EBE9;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Comfortaa', sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Scrollbar for React Native ScrollView */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(242, 167, 160, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(242, 167, 160, 0.45);
+}
+
+/* Structured Output DoT.js Rendered Card Styles */
+.pp-structured-card {
+  background: rgba(53, 51, 56, 0.72);
+  border: 1px solid rgba(242, 167, 160, 0.28);
+  border-radius: 16px;
+  padding: 16px;
+  color: #F5FFFA;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pp-sc-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.pp-sc-title {
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #F2A7A0;
+}
+
+.pp-sc-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #3EB991;
+  letter-spacing: 0.04em;
+}
+
+.pp-sc-summary {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #E6DDD9;
+  margin: 0;
+}
+
+.pp-sc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.pp-sc-item {
+  background: rgba(26, 19, 18, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.pp-sc-group {
+  font-weight: 600;
+  font-size: 13px;
+  color: #FFD700;
+  margin-bottom: 4px;
+}
+
+.pp-sc-impact {
+  font-size: 12px;
+  color: #D9CECC;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.pp-sc-metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #20B2AA;
+}
+
+.pp-sc-actions {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+}
+
+.pp-sc-actions-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #F2A7A0;
+  margin-bottom: 6px;
+}
+
+.pp-sc-actions ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: #E6DDD9;
+  line-height: 1.55;
+}
+
+.glass-pane {
+  background: rgba(245, 255, 250, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(245, 255, 250, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(28, 25, 52, 0.1);
+}
+
+/* Subtle Energy Ripple & Play Button Glow */
+@keyframes energy-ripple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.85;
+    box-shadow: 0 0 0 0 rgba(32, 178, 170, 0.7);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+    box-shadow: 0 0 24px 8px rgba(32, 178, 170, 0);
+  }
+}
+
+@keyframes energy-ripple-inner {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes live-stream-glow {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(62, 185, 145, 0.6);
+  }
+  50% {
+    opacity: 0.45;
+    text-shadow: none;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(242, 167, 160, 0.6);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 14px rgba(242, 167, 160, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(242, 167, 160, 0);
+  }
+}
+
+.ripple-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid rgba(32, 178, 170, 0.75);
+  pointer-events: none;
+  animation: energy-ripple 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.ripple-ring-secondary {
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(242, 167, 160, 0.8);
+  pointer-events: none;
+  animation: energy-ripple-inner 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.streaming-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  margin-left: 3px;
+  background-color: #3EB991;
+  border-radius: 2px;
+  vertical-align: middle;
+  animation: live-stream-glow 0.8s ease-in-out infinite;
+}
+
+.executing-pulse {
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mandatory Brand Signature */
+.brand-signature {
+  position: fixed;
+  bottom: 8px;
+  left: 10px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  user-select: none;
+}
+.brand-signature-line1 {
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 1.2;
+  color: #F5EBE9;
+}
+.brand-signature-line2 {
+  font-family: 'Lexend', sans-serif;
+  font-weight: 200;
+  font-size: 8px;
+  line-height: 1.2;
+  letter-spacing: 0.2em;
+  color: #F5EBE9;
+}
+
