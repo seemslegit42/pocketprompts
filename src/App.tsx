@@ -46,6 +46,8 @@ import {
   LivePromptDraftPayload,
 } from './services/collaborationClient.ts';
 import { CategoryManagerModal, VersionHistoryModal } from './components/MobileModals.tsx';
+import { LivePeerCoEditor } from './components/LivePeerCoEditor.tsx';
+import { Monitor, Smartphone, Columns, Activity } from 'lucide-react';
 
 export interface CategoryItem {
   id: string;
@@ -194,11 +196,35 @@ const SAMPLE_VISION_FRAMES = [
   },
 ];
 
+function BioDigitalVein({ isHighLoad }: { isHighLoad: boolean }) {
+  return (
+    <div className="flex items-center gap-2" title={isHighLoad ? 'System processing request (Load state)' : 'System vein healthy (Optimal state)'}>
+      <svg width="44" height="16" viewBox="0 0 44 16" className="overflow-visible">
+        <path
+          d="M 2 8 Q 12 1, 22 8 T 42 8"
+          fill="none"
+          stroke={isHighLoad ? '#6A0DAD' : '#3EB991'}
+          strokeWidth={isHighLoad ? '1.5' : '2'}
+          strokeLinecap="round"
+          className={isHighLoad ? 'vein-load' : 'vein-healthy'}
+        />
+      </svg>
+      <span
+        className="text-[10px] font-mono font-bold tracking-wider"
+        style={{ color: isHighLoad ? '#F2A7A0' : '#3EB991' }}
+      >
+        {isHighLoad ? 'NEURAL LOAD' : 'VEIN OK'}
+      </span>
+    </div>
+  );
+}
+
 export default function App() {
   // Navigation & Screen State
   const [activeScreen, setActiveScreen] = useState<ScreenName>('home');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [promptSelectorOpen, setPromptSelectorOpen] = useState(false);
+  const [desktopLayoutMode, setDesktopLayoutMode] = useState<'split' | 'mobile' | 'studio'>('split');
 
   // Data State
   const [prompts, setPrompts] = useState<PromptItem[]>([]);
@@ -1058,7 +1084,22 @@ export default function App() {
   const inputSurfaceBg = '#353338';
 
   return (
-    <SafeAreaView className="min-h-screen w-full bg-[#140F0E] text-[#F5EBE9] flex flex-col items-center justify-center">
+    <SafeAreaView
+      className="min-h-screen min-h-[100dvh] w-full text-[#F5EBE9] flex flex-col items-center justify-start lg:justify-center relative overflow-x-hidden p-0 sm:py-4 sm:px-4 lg:py-6"
+      style={{
+        background: 'radial-gradient(ellipse 95% 75% at 50% -15%, rgba(106, 13, 173, 0.28) 0%, rgba(32, 178, 170, 0.12) 42%, rgba(20, 15, 14, 0.98) 78%), #0E0A09',
+      }}
+    >
+      {/* Subtle Bio-Digital Ambient Glows to give GlassPane rich optical refraction */}
+      <div
+        className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[600px] h-[320px] rounded-full blur-[120px] pointer-events-none opacity-35 mix-blend-screen"
+        style={{ background: 'radial-gradient(circle, #F2A7A0 0%, #6A0DAD 55%, transparent 75%)' }}
+      />
+      <div
+        className="absolute bottom-[-8%] right-[5%] w-[420px] h-[300px] rounded-full blur-[130px] pointer-events-none opacity-25 mix-blend-screen"
+        style={{ background: 'radial-gradient(circle, #20B2AA 0%, #3EB991 60%, transparent 80%)' }}
+      />
+
       {/* Subtle Toast Notification */}
       {toastMessage && (
         <div className="fixed top-4 right-4 z-50 bg-[#282120] border border-[#F2A7A0]/40 text-[#F5EBE9] px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs">
@@ -1067,10 +1108,87 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Cross-Platform React Native App Container */}
-      <div
-        className="relative w-full max-w-[540px] min-h-screen sm:min-h-[860px] sm:max-h-[92vh] sm:my-4 sm:rounded-[32px] glass-pane flex flex-col overflow-hidden"
-      >
+      {/* Desktop & Tablet Studio HUD Bar */}
+      <div className="hidden lg:flex w-full max-w-[1380px] items-center justify-between px-6 py-2.5 mb-4 rounded-2xl glass-pane border border-white/10 z-30 shrink-0">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#F2A7A0] flex items-center justify-center font-bold text-xs text-[#5A0808]">#</div>
+            <span className="font-display font-bold text-sm text-[#F5EBE9]">PocketPrompts</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-white/8 text-[#F2A7A0] font-mono">Studio v3.8</span>
+          </div>
+
+          <div className="h-4 w-px bg-white/15" />
+
+          {/* Living Bio-Digital Vein Health */}
+          <BioDigitalVein isHighLoad={isExecuting} />
+        </div>
+
+        {/* Viewport & Screen Mode Controls */}
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#140F0E]/80 border border-white/10">
+          <button
+            type="button"
+            onClick={() => setDesktopLayoutMode('split')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              desktopLayoutMode === 'split'
+                ? 'bg-[#F2A7A0] text-[#5A0808] shadow-sm'
+                : 'text-[#9E9391] hover:text-white'
+            }`}
+            title="Side-by-side Mobile Sanctum and Co-Editor"
+          >
+            <Columns className="w-3.5 h-3.5" />
+            <span>Dual Studio</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setDesktopLayoutMode('mobile')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              desktopLayoutMode === 'mobile'
+                ? 'bg-[#F2A7A0] text-[#5A0808] shadow-sm'
+                : 'text-[#9E9391] hover:text-white'
+            }`}
+            title="Mobile device simulator focus"
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>Mobile Sanctum</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setDesktopLayoutMode('studio')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              desktopLayoutMode === 'studio'
+                ? 'bg-[#F2A7A0] text-[#5A0808] shadow-sm'
+                : 'text-[#9E9391] hover:text-white'
+            }`}
+            title="Expanded desktop workspace"
+          >
+            <Monitor className="w-3.5 h-3.5" />
+            <span>Studio Only</span>
+          </button>
+        </div>
+
+        {/* Right: Active Room & Node Cluster Telemetry */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 text-xs text-[#9E9391]">
+            <Wifi className={`w-3.5 h-3.5 ${wsConnected ? 'text-[#3EB991]' : 'text-amber-500'}`} />
+            <span className="font-mono text-[11px] text-[#E6DDD9]">{activeProvider?.name?.split(' ')?.[0] || 'Gemini'}</span>
+          </div>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/40 border border-white/8 text-[11px] text-[#ACA09E]">
+            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: myCollaborator.color }} />
+            <span className="font-medium text-[#F5EBE9]">{myCollaborator.name.split(' ')?.[0]}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Responsive Workstation Container */}
+      <div className="w-full max-w-[1380px] flex-1 flex items-start justify-center gap-6">
+        {/* Mobile Sanctum (Active Screen inside Phone Frame) */}
+        <div
+          className={`relative w-full ${
+            desktopLayoutMode === 'split' ? 'lg:max-w-[480px] xl:max-w-[510px]' : 'max-w-[540px]'
+          } ${desktopLayoutMode === 'studio' ? 'hidden lg:hidden' : 'flex'} min-h-[100dvh] sm:min-h-[850px] sm:max-h-[88dvh] sm:rounded-[32px] glass-pane flex-col overflow-hidden shadow-[0_24px_64px_-12px_rgba(0,0,0,0.7),0_0_40px_rgba(32,178,170,0.08)] sm:border sm:border-white/15 shrink-0 transition-all duration-200`}
+        >
         {/* ===================================================================
             SLIDE-OUT NAVIGATION DRAWER (Matches Screenshot 2)
            =================================================================== */}
@@ -2687,11 +2805,79 @@ export default function App() {
         )}
       </div>
 
-      {/* Mandatory Brand Signature */}
-      <div className="brand-signature">
-        <div className="brand-signature-line1">ΛΞV Inc</div>
-        <div className="brand-signature-line2">The Future Needs Context</div>
-      </div>
-    </SafeAreaView>
-  );
+      {/* Right Desktop Companion: Live WebSocket Co-Editor & Cluster HUD */}
+      {(desktopLayoutMode === 'split' || desktopLayoutMode === 'studio') && (
+        <div
+          className={`hidden lg:flex flex-col gap-4 max-h-[88dvh] overflow-y-auto pr-1 custom-scrollbar ${
+            desktopLayoutMode === 'studio' ? 'w-full max-w-[1100px]' : 'flex-1 min-w-[380px] max-w-[780px]'
+          }`}
+        >
+          <LivePeerCoEditor
+            activeRoomId={activeCollabRoomId}
+            activePrompt={activePrompt}
+            categories={categories}
+            versions={promptVersions}
+            onTriggerOpenEditorInMobile={(item) => openEditPromptEditor(item)}
+            onVersionReverted={(revertedPrompt, updatedVersions, allPrompts) => {
+              setPromptVersions(updatedVersions);
+              if (Array.isArray(allPrompts) && allPrompts.length > 0) {
+                setPrompts(allPrompts);
+              }
+              if (editingPromptId === revertedPrompt.id) {
+                setFormTitle(revertedPrompt.title);
+                setFormPrompt(revertedPrompt.prompt);
+                setFormInsertionPoint(revertedPrompt.insertion_point);
+                setFormColor(revertedPrompt.color);
+                setFormFollowup(revertedPrompt.followup_prompt || '');
+                setFormPlaceholder(revertedPrompt.placeholder_hint || '');
+                setFormShowActionBars(Boolean(revertedPrompt.show_action_bars));
+                setFormUseStructured(Boolean(revertedPrompt.use_structured_outputs));
+                setFormStructuredSchema(revertedPrompt.structured_schema || '');
+                setFormDotTemplate(revertedPrompt.dot_template || '');
+                setFormCategoryIds(revertedPrompt.category_ids || []);
+              }
+            }}
+          />
+
+          {/* Local Cluster & Multi-Screen Telemetry HUD */}
+          <div className="p-4 rounded-3xl glass-pane border border-white/10 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#20B2AA]/15 text-[#20B2AA] flex items-center justify-center font-bold">
+                <Activity className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-[#F5EBE9]">Agnostic Inference Cluster</div>
+                <div className="text-[11px] text-[#9E9391]">
+                  {providers.length} registered nodes · SQLite persistence active
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {providers.slice(0, 3).map((prov) => (
+                <div
+                  key={prov.id}
+                  className={`px-2.5 py-1 rounded-xl text-[10px] font-mono flex items-center gap-1.5 border ${
+                    prov.is_active === 1
+                      ? 'bg-[#3EB991]/15 text-[#3EB991] border-[#3EB991]/30 font-bold'
+                      : 'bg-white/5 text-[#9E9391] border-white/5'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${prov.is_active === 1 ? 'bg-[#3EB991]' : 'bg-[#9E9391]'}`} />
+                  <span>{prov.name.split(' ')?.[0]}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* Mandatory Brand Signature */}
+    <div className="brand-signature">
+      <div className="brand-signature-line1">ΛΞV Inc</div>
+      <div className="brand-signature-line2">The Future Needs Context</div>
+    </div>
+  </SafeAreaView>
+);
 }
